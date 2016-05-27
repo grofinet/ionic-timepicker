@@ -8,7 +8,7 @@ angular.module('ionic-timepicker.provider', [])
       inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
       format: 12,
       step: 15,
-      title: ''
+      titleText: ''
     };
 
     this.configTimePicker = function (inputObj) {
