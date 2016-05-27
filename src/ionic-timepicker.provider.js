@@ -7,7 +7,8 @@ angular.module('ionic-timepicker.provider', [])
       closeLabel: 'Close',
       inputTime: (((new Date()).getHours() * 60 * 60) + ((new Date()).getMinutes() * 60)),
       format: 12,
-      step: 15
+      step: 15,
+      title: ''
     };
 
     this.configTimePicker = function (inputObj) {
@@ -20,6 +21,7 @@ angular.module('ionic-timepicker.provider', [])
       var $scope = $rootScope.$new();
       $scope.today = resetHMSM(new Date()).getTime();
       $scope.time = {};
+      var interval = null;
 
       //Reset the hours, minutes, seconds and milli seconds
       function resetHMSM(currentDate) {
@@ -29,7 +31,6 @@ angular.module('ionic-timepicker.provider', [])
         currentDate.setMilliseconds(0);
         return currentDate;
       }
-
 
       //Increasing the hours
       $scope.increaseHours = function () {
@@ -82,6 +83,24 @@ angular.module('ionic-timepicker.provider', [])
         $scope.time.meridian = ($scope.time.meridian === "AM") ? "PM" : "AM";
       };
 
+      $scope.startAutoIncrement = function (incrementFn) {
+        if (interval) {
+          return;
+        }
+        interval = setInterval(function () {
+          $scope.$apply(function () {
+            incrementFn();
+          });
+        }, 50);
+      }
+
+      $scope.stopAutoIncrement = function () {
+        if (interval) {
+          window.clearInterval(interval);
+          interval = null;
+        }
+      } 
+      
       function setMinSecs(ipTime, format) {
         $scope.time.hours = Math.floor(ipTime / (60 * 60));
 
